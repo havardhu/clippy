@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Clippy.CliboardContentList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Clippy"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="UC">
+    <UserControl.Resources>
+
+        
+        <local:ClipboardContentTemplateSelector x:Key="ClipboardContentTemplateSelector"></local:ClipboardContentTemplateSelector>
+        <local:WidthConverter x:Key="WidthConverter"></local:WidthConverter>
+
+        <DataTemplate DataType="{x:Type local:ClipboardContent}" x:Key="ControlPanel">
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="5" Margin="0 0 5 0" Command="{Binding DataContext.CopyCommand, ElementName=UC}" CommandParameter="{Binding}">
+                    <materialDesign:PackIcon Kind="ContentCopy"></materialDesign:PackIcon>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="5" Margin="0 0 5 0" Command="{Binding DataContext.DeleteCommand, ElementName=UC}" CommandParameter="{Binding}">
+                    <materialDesign:PackIcon Kind="Delete"></materialDesign:PackIcon>
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+        
+
+        
+        <DataTemplate DataType="{x:Type local:ClipboardContent}" x:Key="StringContentDataTemplate">
+
+            <Grid HorizontalAlignment="Stretch" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-35}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ContentControl Grid.Column="0" HorizontalAlignment="Right" Content="{Binding}" ContentTemplate="{StaticResource ControlPanel}"></ContentControl>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Data}" TextTrimming="CharacterEllipsis" MaxHeight="50" TextWrapping="Wrap" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-100}"></TextBlock>
+                
+            </Grid>
+            
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:ClipboardContent}" x:Key="FileDropContentDataTemplate">
+
+            <Grid HorizontalAlignment="Stretch" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-35}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ContentControl Grid.Column="0" HorizontalAlignment="Right" Content="{Binding}" ContentTemplate="{StaticResource ControlPanel}"></ContentControl>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Data[0]}" TextTrimming="CharacterEllipsis" MaxHeight="50" TextWrapping="Wrap" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-100}"></TextBlock>
+                
+            </Grid>
+
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:ClipboardContent}" x:Key="MultipleFileDropContentDataTemplate">
+
+            <Grid HorizontalAlignment="Stretch" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-35}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ContentControl Grid.Column="0" HorizontalAlignment="Right" Content="{Binding}" ContentTemplate="{StaticResource ControlPanel}"></ContentControl>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Text="Multiple files" TextTrimming="CharacterEllipsis" MaxHeight="50" TextWrapping="Wrap" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-100}"></TextBlock>
+            </Grid>
+
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:ClipboardContent}" x:Key="ImageContentDataTemplate">
+
+            <Grid HorizontalAlignment="Stretch" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-35}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ContentControl Grid.Column="0" HorizontalAlignment="Right" Content="{Binding}" ContentTemplate="{StaticResource ControlPanel}"></ContentControl>
+                <Image Grid.Column="1" Source="{Binding Data}" Height="50" HorizontalAlignment="Left"></Image>
+            </Grid>
+
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:ClipboardContent}" x:Key="ObjectContentDataTemplate">
+            <Grid HorizontalAlignment="Stretch" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-35}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ContentControl Grid.Column="0" HorizontalAlignment="Right" Content="{Binding}" ContentTemplate="{StaticResource ControlPanel}"></ContentControl>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Format}" TextTrimming="CharacterEllipsis" MaxHeight="50" TextWrapping="Wrap" Width="{Binding ActualWidth, ElementName=UC, Converter={StaticResource WidthConverter}, ConverterParameter=-100}"></TextBlock>
+            </Grid>
+        </DataTemplate>
+
+        <!-- -->
+
+    </UserControl.Resources>
+    <Grid>
+        
+            <ListView HorizontalAlignment="Stretch" ItemsSource="{Binding ClipboardContent}" ItemTemplateSelector="{StaticResource ClipboardContentTemplateSelector}" >
+
+            </ListView>
+        
+    </Grid>
+</UserControl>
